@@ -1,4 +1,4 @@
-import db from "../config/db.js";
+import { db } from "../config/db.js";
 import { comments } from "../config/schema.js";
 import { eq, and, sql } from "drizzle-orm";
 
@@ -10,12 +10,12 @@ export const createComment = async (post_id, user_id, text) => {
             user_id: user_id,
             text: text
         })
-        .returning({ comment_id: comments.comment_id });
+        .returning({ comment_id: comments.comment_id, text: comments.text });
 
-    return comment[0] ? comment[0].comment_id : null;
+    return comment[0] ?? null;
 };
 
-export const getComment = async (post_id, comment_id, user_id) => {
+export const getComment = async (comment_id) => {
     const comment = await db
         .select({
             comment_id: comments.comment_id,
@@ -24,14 +24,10 @@ export const getComment = async (post_id, comment_id, user_id) => {
             text: comments.text
         })
         .from(comments)
-        .where(and(
-            eq(comments.comment_id, comment_id),
-            eq(comments.post_id, post_id),
-            eq(comments.user_id, user_id)
-        ))
+        .where(eq(comments.comment_id, comment_id))
         .limit(1);
 
-    return comment[0] ? comment[0] : null;
+    return comment[0] ?? null;
 };
 
 export const getAllComments = async (post_id) => {
@@ -59,16 +55,7 @@ export const deleteComment = async (comment_id, user_id) => {
             comment_id: comments.comment_id
         });
 
-    return comment[0] ? comment[0].comment_id : null;
-};
-
-// when delete post
-export const deleteAllComments = async (post_id) => {
-    const comment = await db
-        .delete(comments)
-        .where(eq(comments.post_id, post_id));
-
-    return comment.rowCount;
+    return comment[0] ?? null;
 };
 
 export const updateComment = async (comment_id, user_id, text) => {

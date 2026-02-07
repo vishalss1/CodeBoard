@@ -50,8 +50,8 @@ export const login = async (req, res, next) => {
             email: email
         };
 
-        const accessToken = signAccessToken(payload);
-        const refreshToken = signRefreshToken(payload);
+        const accessToken = await signAccessToken(payload);
+        const refreshToken = await signRefreshToken(payload);
 
         await upsertToken(refreshToken, user.user_id);
 

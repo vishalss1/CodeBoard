@@ -1,7 +1,7 @@
 import AppError from "../util/AppError.js";
 import { verifyAccessToken } from "../util/jwt.js";
 
-export default (req, res, next) => {
+export default async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -9,7 +9,7 @@ export default (req, res, next) => {
         }
 
         const accessToken = authHeader.split(" ")[1];
-        const decoded = verifyAccessToken(accessToken);
+        const decoded = await verifyAccessToken(accessToken);
 
         req.user = decoded;
 

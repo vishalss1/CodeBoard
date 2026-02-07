@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { signAccessToken, verifyRefreshToken } from "../util/jwt.js";
-import { upsertToken, deleteToken } from "../models/refresh.model";
+import { upsertToken, deleteToken } from "../models/refresh.model.js";
 import { setRefreshTokenCookie, clearRefreshTokenCookie } from "../util/cookie.js";
 import AppError from "../util/AppError.js";
 
@@ -13,7 +13,7 @@ export const refreshAccessToken = async (req, res, next) => {
             return next(new AppError("Refresh token required", 401));
         }
 
-        const decoded = verifyRefreshToken(refreshToken);
+        const decoded = await verifyRefreshToken(refreshToken);
 
         const payload = {
             user_id: decoded.user_id,
@@ -29,7 +29,7 @@ export const refreshAccessToken = async (req, res, next) => {
             return next(new AppError("Refresh token expired", 401));
         }
 
-        const newAccessToken = signAccessToken(payload);
+        const newAccessToken = await signAccessToken(payload);
         const newRefreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: remaining });
 
         await upsertToken(newRefreshToken, payload.user_id);

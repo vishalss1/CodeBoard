@@ -1,4 +1,4 @@
-import db from "../config/db.js";
+import { db } from "../config/db.js";
 import { refreshTokens } from "../config/schema.js";
 import { eq } from "drizzle-orm";
 

@@ -1,4 +1,4 @@
-import db from "../config/db.js";
+import { db } from "../config/db.js";
 import { users } from "../config/schema.js";
 import { eq } from "drizzle-orm";
 
@@ -6,7 +6,8 @@ export const findByEmail = async (email) => {
     const user = await db
         .select({ 
             user_id: users.user_id, 
-            email: users.email 
+            email: users.email,
+            password: users.password 
         })
         .from(users)
         .where(eq(users.email, email))

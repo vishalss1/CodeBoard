@@ -1,4 +1,4 @@
-import db from "../config/db.js";
+import { db } from "../config/db.js";
 import { posts } from "../config/schema.js";
 import { eq, sql, and } from "drizzle-orm";
 
@@ -52,7 +52,7 @@ export const deletePost = async (post_id, owner_id) => {
         .where(and(
             eq(posts.post_id, post_id), 
             eq(posts.owner_id, owner_id)
-        )).returning(posts.post_id);
+        )).returning({ post_id: posts.post_id });
 
     return post[0] ?? null;
 };
