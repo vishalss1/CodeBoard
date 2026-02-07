@@ -1,5 +1,5 @@
-import { pgTable, unique, uuid, text, timestamp, index, foreignKey } from "drizzle-orm/pg-core"
-import { sql } from "drizzle-orm"
+import { pgTable, unique, uuid, text, timestamp, index, foreignKey } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 
 
@@ -21,7 +21,7 @@ export const posts = pgTable("posts", {
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
 	updated_at: timestamp("updated_at", { mode: 'string' }).defaultNow(),
 }, (table) => [
-	index("idx_posts_owner_id").using("btree", table.ownerId.asc().nullsLast().op("uuid_ops")),
+	index("idx_posts_owner_id").using("btree", table.owner_id.asc().nullsLast().op("uuid_ops")),
 	foreignKey({
 			columns: [table.owner_id],
 			foreignColumns: [users.user_id],
@@ -39,7 +39,7 @@ export const comments = pgTable("comments", {
 	index("idx_comments_post_id").using("btree", table.post_id.asc().nullsLast().op("uuid_ops")),
 	index("idx_comments_user_id").using("btree", table.user_id.asc().nullsLast().op("uuid_ops")),
 	foreignKey({
-			columns: [table.postId],
+			columns: [table.post_id],
 			foreignColumns: [posts.post_id],
 			name: "fk_comments_post"
 		}).onDelete("cascade"),
@@ -62,5 +62,5 @@ export const refreshTokens = pgTable("refresh_tokens", {
 			name: "refresh_tokens_user_id_fkey"
 		}).onDelete("cascade"),
 	unique("refresh_tokens_token_key").on(table.token),
-	unique("refresh_tokens_user_id_unique").on(table.user_id),
+	unique("refresh_tokens_user_id_unique").on(table.user_id), // change when scaling to multi device login
 ]);
