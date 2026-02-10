@@ -1,10 +1,21 @@
+import type { Request, Response, NextFunction } from "express";
 import { createPost, getPost, deletePost, updatePost, getAllPost } from "../models/post.model.js";
 import AppError from "../util/AppError.js";
 
-export const newPost = async (req, res, next) => {
+interface PostBody {
+    title: string;
+    code: string;
+    language: string;
+}
+
+interface PostParams {
+    post_id: string;
+}
+
+export const newPost = async (req: Request<{}, {}, PostBody>, res: Response, next: NextFunction) => {
     try {
         const { title, code, language } = req.body;
-        const owner_id = req.user.user_id;
+        const owner_id = req.user!.user_id;
 
         if(!title || !code || !language) {
             return next(new AppError("Post Details required", 400));
@@ -18,7 +29,7 @@ export const newPost = async (req, res, next) => {
     }
 };
 
-export const GetPost = async (req, res, next) => {
+export const GetPost = async (req: Request<PostParams>, res: Response, next: NextFunction) => {
     try {
         const { post_id } = req.params;
         if(!post_id) {
@@ -37,7 +48,7 @@ export const GetPost = async (req, res, next) => {
     }
 };
 
-export const GetAllPost = async (req, res, next) => {
+export const GetAllPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const allPosts = await getAllPost();
 
@@ -47,17 +58,24 @@ export const GetAllPost = async (req, res, next) => {
     }
 };
 
-export const UpdatePost = async (req, res, next) => {
+export const UpdatePost = async (req: Request<PostParams, {}, Partial<PostBody>>, res: Response, next: NextFunction) => {
     try {
         const { post_id } = req.params;
-        const { title, code, language } = req.body;
-        const owner_id = req.user.user_id;
+        const updates = req.body;
+        const owner_id = req.user!.user_id;
 
         if(!post_id) {
             return next(new AppError("Post id required", 400));
         }
 
-        const post = await updatePost(post_id, owner_id, title, code,   language);
+        if (updates.title === undefined &&
+            updates.code === undefined &&
+            updates.language === undefined
+        ) {
+            return next(new AppError("At least one field must be updated", 400));
+        }
+
+        const post = await updatePost(post_id, owner_id, updates);
 
         res.status(200).json({ post });
     } catch(err) {
@@ -65,10 +83,10 @@ export const UpdatePost = async (req, res, next) => {
     }
 };
 
-export const DeletePost = async (req, res, next) => {
+export const DeletePost = async (req: Request<PostParams>, res: Response, next: NextFunction) => {
     try {
         const { post_id } = req.params;
-        const owner_id = req.user.user_id;
+        const owner_id = req.user!.user_id;
 
         if(!post_id) {
             return next(new AppError("Post id required", 400));

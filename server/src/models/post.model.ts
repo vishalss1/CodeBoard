@@ -2,7 +2,7 @@ import { db } from "../config/db.js";
 import { posts } from "../config/schema.js";
 import { eq, sql, and } from "drizzle-orm";
 
-export const createPost = async (title, code, language, owner_id) => {
+export const createPost = async (title: string, code: string, language: string, owner_id: string) => {
     const post = await db
         .insert(posts)
         .values({
@@ -16,7 +16,7 @@ export const createPost = async (title, code, language, owner_id) => {
     return post[0] ?? null;
 };
 
-export const getPost = async (post_id) => {
+export const getPost = async (post_id: string) => {
     const post = await db
         .select({ 
             post_id: posts.post_id, 
@@ -46,7 +46,7 @@ export const getAllPost = async () => {
     return post ?? null;
 };
 
-export const deletePost = async (post_id, owner_id) => {
+export const deletePost = async (post_id: string, owner_id: string) => {
     const post = await db
         .delete(posts)
         .where(and(
@@ -57,20 +57,31 @@ export const deletePost = async (post_id, owner_id) => {
     return post[0] ?? null;
 };
 
-export const updatePost = async (post_id, owner_id, title, code, language) => {
-    const post = await db
-        .update(posts)
-        .set({
-            updated_at: sql`NOW()`,
-            title: title,
-            code: code,
-            language: language
-        })
-        .where(and(
-            eq(posts.post_id, post_id), 
-            eq(posts.owner_id, owner_id)
-        ))
-        .returning({ post_id: posts.post_id });
+interface PostUpdate {
+  title: string;
+  code: string;
+  language: string;
+}
 
-    return post[0] ?? null;
+export const updatePost = async (post_id: string, owner_id: string, updates: Partial<PostUpdate>) => {
+  const updateData: Partial<PostUpdate & { updated_at: any }> = {};
+
+  if (updates.title !== undefined) updateData.title = updates.title;
+  if (updates.code !== undefined) updateData.code = updates.code;
+  if (updates.language !== undefined) updateData.language = updates.language;
+
+  updateData.updated_at = sql`NOW()`;
+
+  const post = await db
+    .update(posts)
+    .set(updateData)
+    .where(
+      and(
+        eq(posts.post_id, post_id),
+        eq(posts.owner_id, owner_id)
+      )
+    )
+    .returning({ post_id: posts.post_id });
+
+  return post[0] ?? null;
 };

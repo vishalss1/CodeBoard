@@ -2,7 +2,7 @@ import { db } from "../config/db.js";
 import { refreshTokens } from "../config/schema.js";
 import { eq } from "drizzle-orm";
 
-export const upsertToken = async (token, user_id) => {
+export const upsertToken = async (token: string, user_id: string) => {
     const result = await db
         .insert(refreshTokens)
         .values({ token: token, user_id: user_id })
@@ -17,7 +17,7 @@ export const upsertToken = async (token, user_id) => {
     return result[0] ?? null;
 };
 
-export const deleteToken = async (token) => {
+export const deleteToken = async (token: string) => {
     const result = await db
         .delete(refreshTokens)
         .where(eq(refreshTokens.token, token))

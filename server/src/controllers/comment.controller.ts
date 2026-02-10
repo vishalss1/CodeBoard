@@ -1,10 +1,20 @@
+import type { Request, Response, NextFunction } from "express";
 import { createComment, getComment, getAllComments, deleteComment, updateComment } from "../models/comment.model.js";
 import AppError from "../util/AppError.js";
 
-export const newComment = async (req, res, next) => {
+interface CommentBody {
+    text: string;
+}
+
+interface CommentParams {
+    post_id: string;
+    comment_id: string;
+}
+
+export const newComment = async (req: Request<CommentParams, {}, CommentBody>, res: Response, next: NextFunction) => {
     try {
         const { post_id } = req.params;
-        const user_id = req.user.user_id;
+        const user_id = req.user!.user_id;
         const { text } = req.body;
 
         if(!post_id || !text) {
@@ -20,7 +30,7 @@ export const newComment = async (req, res, next) => {
     
 };
 
-export const GetComment = async (req, res, next) => {
+export const GetComment = async (req: Request<CommentParams>, res: Response, next: NextFunction) => {
     try {
         const { comment_id } = req.params;
 
@@ -40,7 +50,7 @@ export const GetComment = async (req, res, next) => {
     }
 };
 
-export const GetAllComments = async (req, res, next) => {
+export const GetAllComments = async (req: Request<CommentParams>, res: Response, next: NextFunction) => {
     try {
         const { post_id } = req.params;
 
@@ -56,10 +66,10 @@ export const GetAllComments = async (req, res, next) => {
     }
 };
 
-export const DeleteComment = async (req, res, next) => {
+export const DeleteComment = async (req: Request<CommentParams>, res: Response, next: NextFunction) => {
     try {
         const { comment_id } = req.params;
-        const user_id = req.user.user_id;
+        const user_id = req.user!.user_id;
 
         if(!comment_id) {
             return next(new AppError("Comment id required", 400));
@@ -77,11 +87,11 @@ export const DeleteComment = async (req, res, next) => {
     }
 };
 
-export const UpdateComment = async (req, res, next) => {
+export const UpdateComment = async (req: Request<CommentParams, {}, CommentBody>, res: Response, next: NextFunction) => {
     try {
         const { text } = req.body;
         const { comment_id } = req.params;
-        const user_id = req.user.user_id;
+        const user_id = req.user!.user_id;
 
         if(!comment_id || !text) {
             return next(new AppError("Comment details required", 400));

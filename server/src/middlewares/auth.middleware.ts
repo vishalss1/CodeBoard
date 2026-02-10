@@ -1,7 +1,8 @@
+import type { Request, Response, NextFunction } from "express";
 import AppError from "../util/AppError.js";
 import { verifyAccessToken } from "../util/jwt.js";
 
-export default async (req, res, next) => {
+export default async (req: Request, _res: Response, next: NextFunction) => {
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader || !authHeader.startsWith("Bearer ")) {

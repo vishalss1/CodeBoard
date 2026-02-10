@@ -2,12 +2,12 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 
-import authRoute from "../routes/auth.routes.js";
-import refreshRoute from "../routes/refresh.routes.js";
-import postRoute from "../routes/post.routes.js";
+import authRoute from "./routes/auth.routes.js";
+import refreshRoute from "./routes/refresh.routes.js";
+import postRoute from "./routes/post.routes.js";
 
-import errorHandler from "../middlewares/error.middleware.js";
-import notFound from "../middlewares/notFound.middleware.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
+import notFound from "./middlewares/notFound.middleware.js";
 
 const app = express();
 

@@ -1,3 +1,4 @@
+import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { signAccessToken, verifyRefreshToken } from "../util/jwt.js";
@@ -5,7 +6,7 @@ import { upsertToken, deleteToken } from "../models/refresh.model.js";
 import { setRefreshTokenCookie, clearRefreshTokenCookie } from "../util/cookie.js";
 import AppError from "../util/AppError.js";
 
-export const refreshAccessToken = async (req, res, next) => {
+export const refreshAccessToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const refreshToken = req.cookies?.refreshToken;
 
@@ -29,8 +30,11 @@ export const refreshAccessToken = async (req, res, next) => {
             return next(new AppError("Refresh token expired", 401));
         }
 
+        const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+        if(!REFRESH_TOKEN_SECRET) throw new Error("Refresh Token Secret not set");
+
         const newAccessToken = await signAccessToken(payload);
-        const newRefreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: remaining });
+        const newRefreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {expiresIn: remaining });
 
         await upsertToken(newRefreshToken, payload.user_id);
 

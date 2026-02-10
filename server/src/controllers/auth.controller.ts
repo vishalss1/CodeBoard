@@ -1,3 +1,4 @@
+import type { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import { signAccessToken, signRefreshToken } from "../util/jwt.js";
 import { findByEmail, createUser } from "../models/user.model.js";
@@ -5,7 +6,12 @@ import { upsertToken, deleteToken } from "../models/refresh.model.js";
 import { setRefreshTokenCookie, clearRefreshTokenCookie } from "../util/cookie.js";
 import AppError from "../util/AppError.js";
 
-export const register = async (req, res, next) => {
+interface AuthBody {
+    email: string;
+    password: string;
+}
+
+export const register = async (req: Request<{}, {}, AuthBody>, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
         if(!email || !password) {
@@ -27,7 +33,7 @@ export const register = async (req, res, next) => {
     }
 };
 
-export const login = async (req, res, next) => {
+export const login = async (req: Request<{}, {}, AuthBody>, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
         if(!email || !password) {
@@ -63,9 +69,9 @@ export const login = async (req, res, next) => {
     }
 };
 
-export const logout = async (req, res, next) => {
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const refreshToken = req.cookies?.refreshToken;
+        const refreshToken: string | undefined = req.cookies?.refreshToken;
 
         if (!refreshToken) {
             return res.sendStatus(204);

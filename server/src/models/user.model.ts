@@ -2,7 +2,7 @@ import { db } from "../config/db.js";
 import { users } from "../config/schema.js";
 import { eq } from "drizzle-orm";
 
-export const findByEmail = async (email) => {
+export const findByEmail = async (email: string) => {
     const user = await db
         .select({ 
             user_id: users.user_id, 
@@ -16,7 +16,7 @@ export const findByEmail = async (email) => {
     return user[0] ?? null;
 };
 
-export const findById = async (user_id) => {
+export const findById = async (user_id: string) => {
     const user = await db
         .select({ 
             user_id: users.user_id 
@@ -28,7 +28,7 @@ export const findById = async (user_id) => {
     return user[0] ?? null;
 };
 
-export const createUser = async (email, password) => {
+export const createUser = async (email: string, password: string) => {
     const user = await db
         .insert(users).values({ 
             email: email, 
