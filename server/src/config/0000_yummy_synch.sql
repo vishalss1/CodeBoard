@@ -3,10 +3,11 @@
 /*
 CREATE TABLE "users" (
 	"user_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"email" text NOT NULL,
-	"password" text NOT NULL,
+	"email" text,
+	"password" text,
 	"created_at" timestamp DEFAULT now(),
-	CONSTRAINT "users_email_key" UNIQUE("email")
+	"username" text,
+	"github_id" text
 );
 --> statement-breakpoint
 CREATE TABLE "posts" (
@@ -40,6 +41,9 @@ ALTER TABLE "posts" ADD CONSTRAINT "fk_posts_owner" FOREIGN KEY ("owner_id") REF
 ALTER TABLE "comments" ADD CONSTRAINT "fk_comments_post" FOREIGN KEY ("post_id") REFERENCES "public"."posts"("post_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "comments" ADD CONSTRAINT "fk_comments_user" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "refresh_tokens" ADD CONSTRAINT "refresh_tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "users_email_unique" ON "users" USING btree ("email" text_ops) WHERE (email IS NOT NULL);--> statement-breakpoint
+CREATE UNIQUE INDEX "users_github_id_unique" ON "users" USING btree ("github_id" text_ops) WHERE (github_id IS NOT NULL);--> statement-breakpoint
+CREATE UNIQUE INDEX "users_username_unique" ON "users" USING btree ("username" text_ops) WHERE (username IS NOT NULL);--> statement-breakpoint
 CREATE INDEX "idx_posts_owner_id" ON "posts" USING btree ("owner_id" uuid_ops);--> statement-breakpoint
 CREATE INDEX "idx_comments_post_id" ON "comments" USING btree ("post_id" uuid_ops);--> statement-breakpoint
 CREATE INDEX "idx_comments_user_id" ON "comments" USING btree ("user_id" uuid_ops);

@@ -1,14 +1,19 @@
-import { pgTable, unique, uuid, text, timestamp, index, foreignKey } from "drizzle-orm/pg-core";
+import { pgTable, uniqueIndex, uuid, text, timestamp, index, foreignKey, unique } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 
 
 export const users = pgTable("users", {
 	user_id: uuid("user_id").defaultRandom().primaryKey().notNull(),
-	email: text().notNull(),
-	password: text().notNull(),
+	email: text(),
+	password: text(),
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	username: text(),
+	github_id: text("github_id"),
 }, (table) => [
-	unique("users_email_key").on(table.email),
+	uniqueIndex("users_email_unique").using("btree", table.email.asc().nullsLast().op("text_ops")).where(sql`(email IS NOT NULL)`),
+	uniqueIndex("users_github_id_unique").using("btree", table.github_id.asc().nullsLast().op("text_ops")).where(sql`(github_id IS NOT NULL)`),
+	uniqueIndex("users_username_unique").using("btree", table.username.asc().nullsLast().op("text_ops")).where(sql`(username IS NOT NULL)`),
 ]);
 
 export const posts = pgTable("posts", {
@@ -53,7 +58,7 @@ export const refreshTokens = pgTable("refresh_tokens", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	user_id: uuid("user_id").notNull(),
 	token: text().notNull(),
-	created_id: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
 }, (table) => [
 	foreignKey({
 			columns: [table.user_id],
@@ -61,5 +66,5 @@ export const refreshTokens = pgTable("refresh_tokens", {
 			name: "refresh_tokens_user_id_fkey"
 		}).onDelete("cascade"),
 	unique("refresh_tokens_token_key").on(table.token),
-	unique("refresh_tokens_user_id_unique").on(table.user_id), // change when scaling to multi device login
+	unique("refresh_tokens_user_id_unique").on(table.user_id),
 ]);

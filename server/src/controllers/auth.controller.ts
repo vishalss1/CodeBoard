@@ -41,7 +41,7 @@ export const login = async (req: Request<{}, {}, AuthBody>, res: Response, next:
         }
 
         const user = await findByEmail(email);
-        if(!user) {
+        if(!user || !user.password) {
             return next(new AppError("User not found", 401));
         }
 
