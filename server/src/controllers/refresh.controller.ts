@@ -18,7 +18,7 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
 
         const payload = {
             user_id: decoded.user_id,
-            email: decoded.email
+            username: decoded.username,
         };
 
         const now = Math.floor(Date.now()/1000);
@@ -33,14 +33,14 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
         const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
         if(!REFRESH_TOKEN_SECRET) throw new Error("Refresh Token Secret not set");
 
-        const newAccessToken = await signAccessToken(payload);
+        const accessToken = await signAccessToken(payload);
         const newRefreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {expiresIn: remaining });
 
         await upsertToken(newRefreshToken, payload.user_id);
 
         setRefreshTokenCookie(res, newRefreshToken, remaining * 1000);
 
-        res.status(200).json({ newAccessToken });
+        res.status(200).json({ accessToken });
     } catch(err) {
         next(err);
     }

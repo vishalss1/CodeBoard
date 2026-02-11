@@ -53,7 +53,7 @@ export const login = async (req: Request<{}, {}, AuthBody>, res: Response, next:
 
         const payload = {
             user_id: user.user_id,
-            email: email
+            username: user.username,
         };
 
         const accessToken = await signAccessToken(payload);
@@ -61,7 +61,7 @@ export const login = async (req: Request<{}, {}, AuthBody>, res: Response, next:
 
         await upsertToken(refreshToken, user.user_id);
 
-        setRefreshTokenCookie(res, refreshToken, 7 * 60 * 60 * 1000);
+        setRefreshTokenCookie(res, refreshToken, 7 * 24 * 60 * 60 * 1000);
 
         res.status(200).json({ accessToken });
     } catch (err) {
