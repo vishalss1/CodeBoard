@@ -84,6 +84,10 @@ export const OAuthLogin = async (req: Request, res: Response, next: NextFunction
         }
 
         // push github user into db
+        if(!githubUser.email) {
+            return next(new AppError("Github OAuth didn't return email", 400));
+        }
+
         const user = await createGithubUser(
             githubUser.github_id, 
             githubUser.email, 
