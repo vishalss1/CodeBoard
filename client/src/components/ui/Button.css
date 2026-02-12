@@ -1,0 +1,107 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--transition-fast);
+}
+
+.btn:not(:disabled):hover::after {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Sizes */
+.btn-sm {
+  padding: 6px 14px;
+  font-size: var(--text-sm);
+}
+
+.btn-md {
+  padding: 10px 20px;
+  font-size: var(--text-base);
+}
+
+.btn-lg {
+  padding: 14px 28px;
+  font-size: var(--text-lg);
+}
+
+/* Variants */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), #8b7cf7);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(108, 92, 231, 0.3);
+}
+
+.btn-primary:not(:disabled):hover {
+  box-shadow: 0 4px 20px rgba(108, 92, 231, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+.btn-secondary:not(:disabled):hover {
+  border-color: var(--border-hover);
+  background: var(--bg-elevated);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--accent-danger), #ee5a5a);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(255, 107, 107, 0.3);
+}
+
+.btn-danger:not(:disabled):hover {
+  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Loader */
+.btn-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-loader .spinner {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+  border-top-color: currentColor;
+}

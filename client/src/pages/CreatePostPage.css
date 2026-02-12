@@ -1,0 +1,84 @@
+.create-post {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.create-post-title {
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.create-post-subtitle {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  margin-bottom: var(--space-xl);
+}
+
+.create-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.create-post-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  transition: border-color var(--transition-fast);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239898a6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.create-post-select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+  outline: none;
+}
+
+.create-post-select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.create-post-code {
+  width: 100%;
+  padding: var(--space-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  resize: vertical;
+  min-height: 300px;
+  transition: border-color var(--transition-fast);
+}
+
+.create-post-code:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+  outline: none;
+}
+
+.create-post-code::placeholder {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.create-post-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+}
