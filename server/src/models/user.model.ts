@@ -29,11 +29,12 @@ export const findById = async (user_id: string) => {
     return user[0] ?? null;
 };
 
-export const createUser = async (email: string, password: string) => {
+export const createUser = async (email: string, password: string, username: string) => {
     const user = await db
         .insert(users).values({ 
             email: email, 
-            password: password 
+            password: password,
+            username: username,
         })
         .returning({ user_id: users.user_id });
 

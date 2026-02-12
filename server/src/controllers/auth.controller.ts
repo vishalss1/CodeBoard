@@ -9,13 +9,14 @@ import AppError from "../util/AppError.js";
 interface AuthBody {
     email: string;
     password: string;
+    username: string;
 }
 
 export const register = async (req: Request<{}, {}, AuthBody>, res: Response, next: NextFunction) => {
     try {
-        const { email, password } = req.body;
-        if(!email || !password) {
-            return next(new AppError("Email & Password Required", 400));
+        const { email, password, username } = req.body;
+        if(!email || !password || !username) {
+            return next(new AppError("User details Required", 400));
         }
 
         const found = await findByEmail(email);
@@ -25,7 +26,7 @@ export const register = async (req: Request<{}, {}, AuthBody>, res: Response, ne
 
         const hashed = await bcrypt.hash(password, 10);
 
-        await createUser(email, hashed);
+        await createUser(email, hashed, username);
 
         res.status(201).json({ message: "User created" });
     } catch (err) {
