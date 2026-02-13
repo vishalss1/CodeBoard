@@ -1,0 +1,30 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: var(--navbar-height);
+}
+
+.app-layout-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-2xl) var(--space-xl);
+  min-width: 0; /* prevent flex overflow */
+}
+
+.app-layout-feed {
+  max-width: 800px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .app-layout-main {
+    padding: var(--space-lg) var(--space-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .app-layout-main {
+    padding: var(--space-md) var(--space-sm);
+  }
+}

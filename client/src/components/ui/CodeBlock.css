@@ -1,0 +1,72 @@
+.codeblock-container {
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #1e1e1e;
+  margin: var(--space-md) 0;
+}
+
+.codeblock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px var(--space-md);
+  background: #2d2d2d;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.codeblock-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.codeblock-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg-hover);
+}
+
+.codeblock-dot-red {
+  background: #ff5f57;
+}
+
+.codeblock-dot-yellow {
+  background: #febc2e;
+}
+
+.codeblock-dot-green {
+  background: #28c840;
+}
+
+.codeblock-lang {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.codeblock-body {
+  position: relative;
+  overflow-x: auto;
+  padding: var(--space-md);
+}
+
+/* Ensure code inside doesn't overflow the feed container */
+.codeblock-body pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.codeblock-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(transparent, #1e1e1e);
+  pointer-events: none;
+}

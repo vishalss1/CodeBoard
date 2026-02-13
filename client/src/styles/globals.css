@@ -71,8 +71,21 @@
 
   /* Layout */
   --navbar-height: 64px;
-  --sidebar-width: 260px;
+  --sidebar-width: 240px;
   --max-width: 1200px;
+}
+
+/* ── Glass Utilities ── */
+.glass {
+  background: rgba(10, 10, 15, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-subtle {
+  background: rgba(18, 18, 26, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* ── Reset ── */

@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { getGithubLoginUrl } from '../features/auth/auth.api';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import './AuthPages.css';
@@ -34,7 +33,9 @@ export default function LoginPage() {
   };
 
   const handleGithub = () => {
-    window.location.href = getGithubLoginUrl();
+    // Navigate to backend OAuth entry point (proxied via Vite)
+    // Backend redirects to GitHub, which redirects back to /auth/callback
+    window.location.href = '/auth/github';
   };
 
   return (

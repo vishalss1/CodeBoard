@@ -1,7 +1,6 @@
 .hero {
   text-align: center;
-  padding: var(--space-3xl) 0;
-  margin-bottom: var(--space-2xl);
+  padding: var(--space-3xl) 0 var(--space-2xl);
 }
 
 .hero-badge {
@@ -27,54 +26,110 @@
 .hero-description {
   font-size: var(--text-lg);
   color: var(--text-secondary);
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto var(--space-xl);
   line-height: 1.7;
 }
 
+.hero-terminal {
+  margin: var(--space-2xl) auto;
+  max-width: 620px;
+}
+
 .hero-actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
   gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.posts-section {
-  padding-bottom: var(--space-3xl);
+/* ── Feed ── */
+.feed-section {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.section-header {
+.feed-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px var(--space-md);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-primary);
+  background: var(--bg-secondary);
   margin-bottom: var(--space-xl);
+  transition: border-color var(--transition-fast);
 }
 
-.section-title {
+.feed-search-wrap:focus-within {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+}
+
+.feed-search-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.feed-search-input {
+  width: 100%;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.feed-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.feed-header {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.feed-title {
   font-size: var(--text-2xl);
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+}
+
+.feed-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Legacy section header for unauthenticated view */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.section-title {
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .section-subtitle {
   font-size: var(--text-base);
   color: var(--text-secondary);
-}
-
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: var(--space-lg);
+  margin-top: var(--space-sm);
 }
 
 @media (max-width: 768px) {
   .hero-title {
     font-size: var(--text-3xl);
   }
-
-  .hero-actions {
-    flex-direction: column;
-  }
-
-  .posts-grid {
-    grid-template-columns: 1fr;
+  .hero-description {
+    font-size: var(--text-base);
   }
 }

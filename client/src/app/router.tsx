@@ -7,6 +7,7 @@ import PostDetailsPage from '../pages/PostDetailsPage';
 import CreatePostPage from '../pages/CreatePostPage';
 import DashboardPage from '../pages/DashboardPage';
 import SettingsPage from '../pages/SettingsPage';
+import AuthCallbackPage from '../pages/AuthCallbackPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 export const router = createBrowserRouter([
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
   {
     path: '/register',
     element: <RegisterPage />,
+  },
+  {
+    path: '/auth/github/callback',
+    element: <AuthCallbackPage />,
   },
   {
     path: '/posts/:id',

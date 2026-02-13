@@ -4,8 +4,7 @@ import { getAllPosts, deletePost } from '../features/posts/posts.api';
 import type { Post } from '../features/posts/posts.types';
 import PostCard from '../features/posts/PostCard';
 import { useAuth } from '../hooks/useAuth';
-import Navbar from '../components/layout/Navbar';
-import Sidebar from '../components/layout/Sidebar';
+import AppLayout from '../components/layout/AppLayout';
 import Modal from '../components/ui/Modal';
 import Button from '../components/ui/Button';
 import './DashboardPage.css';
@@ -49,64 +48,60 @@ export default function DashboardPage() {
   };
 
   return (
-    <>
-      <Navbar />
-      <Sidebar />
-      <div className="page-container-with-sidebar">
-        <div className="dashboard animate-fade-in">
-          <div className="dashboard-header">
-            <div>
-              <h1 className="dashboard-title">Dashboard</h1>
-              <p className="dashboard-subtitle">
-                Welcome back, <strong>{user?.username ?? 'User'}</strong>
-              </p>
-            </div>
-            <Button onClick={() => navigate('/posts/create')}>
-              + New Post
-            </Button>
+    <AppLayout>
+      <div className="dashboard animate-fade-in">
+        <div className="dashboard-header">
+          <div>
+            <h1 className="dashboard-title">Dashboard</h1>
+            <p className="dashboard-subtitle">
+              Welcome back, <strong>{user?.username ?? 'User'}</strong>
+            </p>
           </div>
-
-          {/* Stats */}
-          <div className="dashboard-stats">
-            <div className="stat-card card">
-              <span className="stat-value">{posts.length}</span>
-              <span className="stat-label">Total Posts</span>
-            </div>
-            <div className="stat-card card">
-              <span className="stat-value">{new Set(posts.map((p) => p.language)).size}</span>
-              <span className="stat-label">Languages</span>
-            </div>
-          </div>
-
-          {error && <div className="auth-error" style={{ marginBottom: 'var(--space-lg)' }}>{error}</div>}
-
-          <h2 className="dashboard-section-title">Your Posts</h2>
-
-          {isLoading ? (
-            <div className="posts-grid">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="skeleton" style={{ height: 220, borderRadius: 'var(--radius-lg)' }} />
-              ))}
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="empty-state">
-              <h3>No posts yet</h3>
-              <p>Create your first code snippet to get started!</p>
-            </div>
-          ) : (
-            <div className="posts-grid">
-              {posts.map((post) => (
-                <PostCard
-                  key={post.post_id}
-                  post={post}
-                  showActions
-                  onEdit={handleEdit}
-                  onDelete={() => setDeleteTarget(post)}
-                />
-              ))}
-            </div>
-          )}
+          <Button onClick={() => navigate('/posts/create')}>
+            + New Post
+          </Button>
         </div>
+
+        {/* Stats */}
+        <div className="dashboard-stats">
+          <div className="stat-card card">
+            <span className="stat-value">{posts.length}</span>
+            <span className="stat-label">Total Posts</span>
+          </div>
+          <div className="stat-card card">
+            <span className="stat-value">{new Set(posts.map((p) => p.language)).size}</span>
+            <span className="stat-label">Languages</span>
+          </div>
+        </div>
+
+        {error && <div className="auth-error" style={{ marginBottom: 'var(--space-lg)' }}>{error}</div>}
+
+        <h2 className="dashboard-section-title">Your Posts</h2>
+
+        {isLoading ? (
+          <div className="feed-list">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="skeleton" style={{ height: 220, borderRadius: 'var(--radius-lg)' }} />
+            ))}
+          </div>
+        ) : posts.length === 0 ? (
+          <div className="empty-state">
+            <h3>No posts yet</h3>
+            <p>Create your first code snippet to get started!</p>
+          </div>
+        ) : (
+          <div className="feed-list">
+            {posts.map((post) => (
+              <PostCard
+                key={post.post_id}
+                post={post}
+                showActions
+                onEdit={handleEdit}
+                onDelete={() => setDeleteTarget(post)}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <Modal
@@ -122,6 +117,6 @@ export default function DashboardPage() {
           <Button variant="danger" onClick={handleDeleteConfirm}>Delete</Button>
         </div>
       </Modal>
-    </>
+    </AppLayout>
   );
 }

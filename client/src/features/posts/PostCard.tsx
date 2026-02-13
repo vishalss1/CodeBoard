@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Post } from './posts.types';
+import CodeBlock from '../../components/ui/CodeBlock';
 import './PostCard.css';
 
 interface PostCardProps {
@@ -10,7 +11,7 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, showActions = false, onEdit, onDelete }: PostCardProps) {
-  const codePreview = post.code.length > 200 ? post.code.slice(0, 200) + '...' : post.code;
+  const codePreview = post.code.length > 300 ? post.code.slice(0, 300) + '...' : post.code;
 
   return (
     <article className="post-card card animate-fade-in">
@@ -21,8 +22,13 @@ export default function PostCard({ post, showActions = false, onEdit, onDelete }
         <span className="badge">{post.language}</span>
       </div>
 
-      <div className="post-card-code">
-        <pre><code>{codePreview}</code></pre>
+      <div className="post-card-code-wrap">
+        <CodeBlock
+          code={codePreview}
+          language={post.language}
+          maxHeight={160}
+          showHeader={false}
+        />
       </div>
 
       <div className="post-card-footer">

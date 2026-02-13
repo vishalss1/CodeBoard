@@ -23,34 +23,9 @@
   color: var(--accent-primary);
 }
 
-.post-card-code {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
+.post-card-code-wrap {
   border-radius: var(--radius-md);
-  padding: var(--space-md);
   overflow: hidden;
-  max-height: 140px;
-  position: relative;
-}
-
-.post-card-code::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background: linear-gradient(transparent, var(--bg-primary));
-  pointer-events: none;
-}
-
-.post-card-code pre {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  color: var(--text-secondary);
-  white-space: pre-wrap;
-  word-break: break-word;
 }
 
 .post-card-footer {

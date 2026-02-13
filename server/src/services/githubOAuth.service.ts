@@ -5,9 +5,12 @@ const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID!;
 const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL!;
 
 interface GithubTokenResponse {
-  access_token: string;
-  token_type: string;
-  scope: string;
+  access_token?: string;
+  token_type?: string;
+  scope?: string;
+  error?: string;
+  error_description?: string;
+  error_uri?: string;
 };
 
 export const exchangeCodeForToken = async (code: string) => {
@@ -17,7 +20,7 @@ export const exchangeCodeForToken = async (code: string) => {
             client_id: GITHUB_CLIENT_ID,
             client_secret: GITHUB_CLIENT_SECRET,
             code,
-            redirect_url: GITHUB_CALLBACK_URL,
+            redirect_uri: GITHUB_CALLBACK_URL,
         },
         {
             headers: {
@@ -26,7 +29,16 @@ export const exchangeCodeForToken = async (code: string) => {
         }
     );
 
-    return response.data.access_token;
+    const data = response.data;
+
+    if (data.error || !data.access_token) {
+        console.error("GitHub token exchange failed:", data);
+        throw new Error(
+            data.error_description ?? data.error ?? "Failed to obtain GitHub access token"
+        );
+    }
+
+    return data.access_token;
 };
 
 interface GithubUserResponse {

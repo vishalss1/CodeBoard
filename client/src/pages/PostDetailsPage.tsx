@@ -4,7 +4,9 @@ import { getPost, deletePost } from '../features/posts/posts.api';
 import type { Post } from '../features/posts/posts.types';
 import CommentList from '../features/comments/CommentList';
 import { useAuth } from '../hooks/useAuth';
+import AppLayout from '../components/layout/AppLayout';
 import Navbar from '../components/layout/Navbar';
+import CodeBlock from '../components/ui/CodeBlock';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
 import './PostDetailsPage.css';
@@ -46,72 +48,71 @@ export default function PostDetailsPage() {
 
   const isOwner = isAuthenticated && user && post && user.user_id === post.owner_id;
 
-  if (isLoading) {
-    return (
+  // Helper to wrap content in correct layout
+  const Wrapper = ({ children }: { children: React.ReactNode }) =>
+    isAuthenticated ? (
+      <AppLayout>{children}</AppLayout>
+    ) : (
       <>
         <Navbar />
-        <div className="page-container">
-          <div className="flex-center" style={{ minHeight: '60vh' }}>
-            <div className="spinner spinner-lg" />
-          </div>
-        </div>
+        <div className="page-container">{children}</div>
       </>
+    );
+
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <div className="flex-center" style={{ minHeight: '60vh' }}>
+          <div className="spinner spinner-lg" />
+        </div>
+      </Wrapper>
     );
   }
 
   if (error || !post) {
     return (
-      <>
-        <Navbar />
-        <div className="page-container">
-          <div className="empty-state">
-            <h3>{error ?? 'Post not found'}</h3>
-            <p style={{ marginBottom: 'var(--space-lg)' }}>The post you're looking for doesn't exist.</p>
-            <Link to="/" className="btn btn-primary btn-md">
-              Back to Home
-            </Link>
-          </div>
+      <Wrapper>
+        <div className="empty-state">
+          <h3>{error ?? 'Post not found'}</h3>
+          <p style={{ marginBottom: 'var(--space-lg)' }}>
+            The post you're looking for doesn't exist.
+          </p>
+          <Link to="/" className="btn btn-primary btn-md">
+            Back to Home
+          </Link>
         </div>
-      </>
+      </Wrapper>
     );
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="page-container">
-        <article className="post-detail animate-fade-in">
-          <div className="post-detail-header">
-            <div>
-              <h1 className="post-detail-title">{post.title}</h1>
-              <span className="badge">{post.language}</span>
-            </div>
-            {isOwner && (
-              <div className="post-detail-actions">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => navigate(`/posts/create?edit=${post.post_id}`)}
-                >
-                  Edit
-                </Button>
-                <Button variant="danger" size="sm" onClick={() => setShowDeleteModal(true)}>
-                  Delete
-                </Button>
-              </div>
-            )}
+    <Wrapper>
+      <article className="post-detail animate-fade-in">
+        <div className="post-detail-header">
+          <div>
+            <h1 className="post-detail-title">{post.title}</h1>
+            <span className="badge">{post.language}</span>
           </div>
-
-          <div className="post-detail-code">
-            <div className="code-block-header">
-              <span>{post.language}</span>
+          {isOwner && (
+            <div className="post-detail-actions">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => navigate(`/posts/create?edit=${post.post_id}`)}
+              >
+                Edit
+              </Button>
+              <Button variant="danger" size="sm" onClick={() => setShowDeleteModal(true)}>
+                Delete
+              </Button>
             </div>
-            <pre className="code-block"><code>{post.code}</code></pre>
-          </div>
+          )}
+        </div>
 
-          <CommentList postId={post.post_id} />
-        </article>
-      </div>
+        <CodeBlock code={post.code} language={post.language} />
+
+        <CommentList postId={post.post_id} />
+      </article>
 
       <Modal
         isOpen={showDeleteModal}
@@ -130,6 +131,6 @@ export default function PostDetailsPage() {
           </Button>
         </div>
       </Modal>
-    </>
+    </Wrapper>
   );
 }
