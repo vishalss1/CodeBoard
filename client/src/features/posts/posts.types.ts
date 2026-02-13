@@ -4,6 +4,7 @@ export interface Post {
   code: string;
   language: string;
   owner_id: string;
+  username?: string | null;
 }
 
 export interface CreatePostRequest {

@@ -19,7 +19,10 @@ export default function PostCard({ post, showActions = false, onEdit, onDelete }
         <Link to={`/posts/${post.post_id}`} className="post-card-title">
           {post.title}
         </Link>
-        <span className="badge">{post.language}</span>
+        <div className="post-card-meta">
+          {post.username && <span className="post-card-author">@{post.username}</span>}
+          <span className="badge">{post.language}</span>
+        </div>
       </div>
 
       <div className="post-card-code-wrap">

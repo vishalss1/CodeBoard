@@ -23,6 +23,19 @@
   color: var(--accent-primary);
 }
 
+.post-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.post-card-author {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
 .post-card-code-wrap {
   border-radius: var(--radius-md);
   overflow: hidden;

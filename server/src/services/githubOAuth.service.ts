@@ -11,52 +11,55 @@ interface GithubTokenResponse {
   error?: string;
   error_description?: string;
   error_uri?: string;
-};
+}
 
 export const exchangeCodeForToken = async (code: string) => {
-    const response = await axios.post<GithubTokenResponse>(
-        "https://github.com/login/oauth/access_token",
-        {
-            client_id: GITHUB_CLIENT_ID,
-            client_secret: GITHUB_CLIENT_SECRET,
-            code,
-            redirect_uri: GITHUB_CALLBACK_URL,
-        },
-        {
-            headers: {
-                Accept: "application/json",
-            },
-        }
-    );
+  const params = new URLSearchParams({
+    client_id: GITHUB_CLIENT_ID,
+    client_secret: GITHUB_CLIENT_SECRET,
+    code,
+    redirect_uri: GITHUB_CALLBACK_URL,
+  });
 
-    const data = response.data;
-
-    if (data.error || !data.access_token) {
-        console.error("GitHub token exchange failed:", data);
-        throw new Error(
-            data.error_description ?? data.error ?? "Failed to obtain GitHub access token"
-        );
+  const response = await axios.post<GithubTokenResponse>(
+    "https://github.com/login/oauth/access_token",
+    params.toString(), // send as x-www-form-urlencoded
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json", // ensures JSON response
+      },
     }
+  );
 
-    return data.access_token;
+  const data = response.data;
+
+  if (data.error || !data.access_token) {
+    console.error("GitHub token exchange failed:", data);
+    throw new Error(
+      data.error_description ?? data.error ?? "Failed to obtain GitHub access token"
+    );
+  }
+
+  return data.access_token;
 };
 
 interface GithubUserResponse {
   id: number;
   login: string;
   email: string | null;
-};
+}
 
-export const fetchGithubUser = async (accessToken : string) => {
-    const response = await axios.get<GithubUserResponse>("https://api.github.com/user", {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-    });
+export const fetchGithubUser = async (accessToken: string) => {
+  const response = await axios.get<GithubUserResponse>("https://api.github.com/user", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-    return {
-        github_id: response.data.id.toString(),
-        email: response.data.email,
-        username: response.data.login,
-    };
+  return {
+    github_id: response.data.id.toString(),
+    email: response.data.email,
+    username: response.data.login,
+  };
 };

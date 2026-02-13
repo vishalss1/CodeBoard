@@ -91,7 +91,10 @@ export default function PostDetailsPage() {
         <div className="post-detail-header">
           <div>
             <h1 className="post-detail-title">{post.title}</h1>
-            <span className="badge">{post.language}</span>
+            <div className="post-detail-meta">
+              {post.username && <span className="post-detail-author">@{post.username}</span>}
+              <span className="badge">{post.language}</span>
+            </div>
           </div>
           {isOwner && (
             <div className="post-detail-actions">

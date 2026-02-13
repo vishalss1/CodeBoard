@@ -47,6 +47,7 @@ export default function CommentList({ postId }: CommentListProps) {
           post_id: postId,
           user_id: user!.user_id,
           text: result.text,
+          username: user!.username,
         },
       ]);
       setNewText('');
@@ -129,7 +130,7 @@ export default function CommentList({ postId }: CommentListProps) {
             <div key={comment.comment_id} className="comment-item animate-fade-in">
               <div className="comment-header">
                 <span className="comment-author">
-                  {comment.user_id === user?.user_id ? 'You' : 'User'}
+                  {comment.user_id === user?.user_id ? 'You' : `@${comment.username ?? 'Anonymous'}`}
                 </span>
                 {comment.user_id === user?.user_id && (
                   <div className="comment-actions">

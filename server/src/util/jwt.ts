@@ -3,7 +3,7 @@ import "dotenv/config";
 
 interface AuthJwtPayload extends jwt.JwtPayload {
     user_id: string;
-    email: string;
+    username: string;
     exp: number;
 }
 

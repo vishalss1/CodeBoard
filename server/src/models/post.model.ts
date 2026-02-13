@@ -1,5 +1,5 @@
 import { db } from "../config/db.js";
-import { posts } from "../config/schema.js";
+import { posts, users } from "../config/schema.js";
 import { eq, sql, and } from "drizzle-orm";
 
 export const createPost = async (title: string, code: string, language: string, owner_id: string) => {
@@ -20,12 +20,14 @@ export const getPost = async (post_id: string) => {
     const post = await db
         .select({ 
             post_id: posts.post_id, 
-            owner_id: posts.owner_id, 
+            owner_id: posts.owner_id,
+            username: users.username, 
             code: posts.code, 
             language: posts.language, 
             title: posts.title 
         })
         .from(posts)
+        .innerJoin(users, eq(posts.owner_id, users.user_id))
         .where(eq(posts.post_id, post_id))
         .limit(1);
 
@@ -37,11 +39,13 @@ export const getAllPost = async () => {
         .select({
             post_id: posts.post_id,
             owner_id: posts.owner_id,
+            username: users.username,
             code: posts.code,
             language: posts.language,
             title: posts.title 
         })
-        .from(posts);
+        .from(posts)
+        .innerJoin(users, eq(posts.owner_id, users.user_id));
 
     return post ?? null;
 };

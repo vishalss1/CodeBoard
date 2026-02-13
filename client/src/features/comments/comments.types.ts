@@ -3,6 +3,7 @@ export interface Comment {
   post_id: string;
   user_id: string;
   text: string;
+  username?: string | null;
 }
 
 export interface CreateCommentRequest {

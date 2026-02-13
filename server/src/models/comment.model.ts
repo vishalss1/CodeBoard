@@ -1,5 +1,5 @@
 import { db } from "../config/db.js";
-import { comments } from "../config/schema.js";
+import { comments, users } from "../config/schema.js";
 import { eq, and } from "drizzle-orm";
 
 export const createComment = async (post_id: string, user_id: string, text: string) => {
@@ -21,9 +21,11 @@ export const getComment = async (comment_id: string) => {
             comment_id: comments.comment_id,
             post_id: comments.post_id,
             user_id: comments.user_id,
-            text: comments.text
+            text: comments.text,
+            username: users.username,
         })
         .from(comments)
+        .innerJoin(users, eq(comments.user_id, users.user_id))
         .where(eq(comments.comment_id, comment_id))
         .limit(1);
 
@@ -36,9 +38,11 @@ export const getAllComments = async (post_id: string) => {
             post_id: comments.post_id,
             user_id: comments.user_id,
             comment_id: comments.comment_id,
-            text: comments.text
+            text: comments.text,
+            username: users.username,
         })
         .from(comments)
+        .innerJoin(users, eq(comments.user_id, users.user_id))
         .where(eq(comments.post_id, post_id));
 
     return comment;
