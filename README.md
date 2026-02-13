@@ -35,9 +35,6 @@ Complete OAuth pipeline from authorization to token exchange to user creation.
 **Structured Architecture**  
 Routes → Controllers → Services → Models → Database
 
-**Error Handling**  
-Custom error classes with consistent response formatting.
-
 ---
 
 ## Tech Stack
