@@ -1,5 +1,5 @@
 # CodeBoard – Backend Authentication System
-A TypeScript + Express backend implementing GitHub OAuth authentication with JWT-based session management and PostgreSQL integration.
+designed and implemented a dual Auth (Github OAuth + JWT Auth) architecture on a basic CRUD App, keeping latency and consistency in mind
 
 <img width="1919" height="995" alt="image" src="https://github.com/user-attachments/assets/5aa28311-7014-448d-a3dd-a1b146842c7c" />
 
