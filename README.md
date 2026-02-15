@@ -76,7 +76,7 @@ ACCESS_TOKEN_SECRET=your_access_secret
 REFRESH_TOKEN_SECRET=your_refresh_secret
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
-GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
+GITHUB_CALLBACK_URL=http://localhost:5173/auth/github/callback
 ```
 
 ### Run
